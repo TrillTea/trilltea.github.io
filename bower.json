@@ -1,0 +1,19 @@
+{
+  "name": "thenortheestern.github.io",
+  "version": "0.0.0",
+  "homepage": "https://github.com/TheNorthEestern/thenortheestern.github.io",
+  "authors": [
+    "Kacy James <inquen@gmail.com>"
+  ],
+  "description": "Kacy James' Personal Site",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

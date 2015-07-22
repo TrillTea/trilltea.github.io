@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Audio Stuff</title>
+  <script type="text/javascript" charset="utf-8">
+    var dogBarkingBuffer = null;
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new AudioContext();
+    var offlineContext;
+
+    function loadDogSound(url) {
+      var request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.responseType = 'arraybuffer';
+
+      // Decode async
+      request.onload = function() {
+        context.decodeAudioData(request.response, function(buffer){
+            dogBarkingBuffer = buffer;
+
+            playSound(dogBarkingBuffer);
+        }, onError);
+      }
+      request.send();
+    }
+
+    function onError(e) {
+      console.log('whoops');
+    }
+
+    function playSound(buffer) {
+      var source = context.createBufferSource();
+      offlineContext = new OfflineAudioContext(1, buffer.length, buffer.sampleRate);
+      var offlineSource = offlineContext.createBufferSource();
+      offlineSource.buffer = buffer;
+
+      var filter = offlineContext.createBiquadFilter();
+      filter.type = 'lowpass';
+
+      offlineSource.connect(filter);
+      filter.connect(offlineContext.destination);
+      offlineSource.start(0);
+      offlineContext.startRendering();
+      offlineContext.oncomplete = function(e){
+        var filteredBuffer = e.renderedBuffer; 
+        source.buffer = filteredBuffer;
+      } 
+      source.connect(context.destination);
+      source.start(0);
+    }
+
+    loadDogSound('bark.mp3');
+  </script>
+</head>
+<body>
+  <p>Hello!</p> 
+</body>
+</html>
