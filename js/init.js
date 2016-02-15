@@ -23,17 +23,6 @@
 			window.onload = function() {
 				document.body.className = '';
 			}
-
-		// Prevent scrolling on touch.
-			window.ontouchmove = function() {
-				return false;
-			}
-
-		// Fix scroll position on orientation change.
-			window.onorientationchange = function() {
-				document.body.scrollTop = 0;
-			}
-
 	/*
 
 	// Events (jQuery).
